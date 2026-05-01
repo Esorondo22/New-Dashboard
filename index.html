@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACA Player360 Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #07090d;
+      --panel: #0e1520;
+      --card: #131c28;
+      --card2: #192434;
+      --gold: #f5c542;
+      --gold-dim: rgba(245,197,66,.13);
+      --green: #2ecc8a;
+      --red: #f05c5c;
+      --blue: #4ab3f4;
+      --purple: #a78bfa;
+      --text: #eef2f7;
+      --muted: #6b7f96;
+      --border: rgba(255,255,255,.06);
+      --border2: rgba(255,255,255,.11);
+      --shadow: 0 28px 56px rgba(0,0,0,.6);
+      --sidebar-w: 248px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 55% 35% at 5% 0%, rgba(245,197,66,.055) 0%, transparent 50%),
+        radial-gradient(ellipse 45% 35% at 95% 100%, rgba(74,179,244,.04) 0%, transparent 50%);
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
+
+    /* ═══════════════════════════════
+       LOGIN
+    ═══════════════════════════════ */
+    .login-wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-wrap::before {
+      content: 'ACA';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40vw;
+      color: rgba(245,197,66,.022);
+      left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .login-card {
+      width: min(480px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 28px;
+      padding: 44px;
+      box-shadow: var(--shadow), 0 0 0 1px rgba(245,197,66,.06);
+      position: relative;
+      z-index: 1;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+    .brand-lockup { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .brand-icon {
+      width: 48px; height: 48px;
+      background: var(--gold);
+      border-radius: 14px;
+      display: grid; place-items: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      color: #0d1117;
+      flex-shrink: 0;
+    }
+    .brand-text { line-height: 1.2; }
+    .brand-text strong { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: .14em; color: var(--gold); }
+    .brand-text span { font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+
+    .login-card h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; letter-spacing: .03em; line-height: 1;
+      margin-bottom: 10px;
+    }
+    .login-card h1 em { color: var(--gold); font-style: normal; }
+    .login-card .sub { color: var(--muted); line-height: 1.65; margin-bottom: 32px; font-size: 13.5px; }
+
+    .field-wrap { margin-bottom: 16px; }
+    label.fl { display: block; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 7px; }
+    input, select, textarea {
+      width: 100%; background: rgba(255,255,255,.045); border: 1px solid var(--border2);
+      color: var(--text); border-radius: 12px; padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
+      transition: border-color .2s, background .2s, box-shadow .2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(245,197,66,.45);
+      background: rgba(245,197,66,.035);
+      box-shadow: 0 0 0 3px rgba(245,197,66,.08);
+    }
+    textarea { resize: vertical; min-height: 90px; }
+    select option { background: #1a2535; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; cursor: pointer; border-radius: 12px; padding: 13px 22px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+      transition: transform .14s, filter .14s, background .14s, box-shadow .14s;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.09); }
+    .btn:active { transform: translateY(0); filter: brightness(.95); }
+    .btn-gold { background: var(--gold); color: #0d1117; width: 100%; margin-top: 8px; box-shadow: 0 4px 20px rgba(245,197,66,.25); }
+    .btn-ghost { background: rgba(255,255,255,.06); color: var(--text); border: 1px solid var(--border2); }
+    .btn-danger { background: rgba(240,92,92,.13); color: #fca5a5; border: 1px solid rgba(240,92,92,.22); }
+    .btn-blue { background: rgba(74,179,244,.13); color: #bae6fd; border: 1px solid rgba(74,179,244,.25); }
+    .btn-purple { background: rgba(167,139,250,.13); color: #ddd6fe; border: 1px solid rgba(167,139,250,.25); }
+    .btn-sm { padding: 8px 14px; font-size: 12px; border-radius: 9px; }
+
+    .demo-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .chip {
+      background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 14px; font-size: 12px; color: var(--muted); line-height: 1.5; cursor: pointer;
+      transition: border-color .15s, background .15s; flex: 1; min-width: 120px;
+    }
+    .chip:hover { background: rgba(245,197,66,.06); border-color: rgba(245,197,66,.2); }
+    .chip strong { color: var(--text); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 2px; }
+
+    /* ═══════════════════════════════
+       APP SHELL
+    ═══════════════════════════════ */
+    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+    aside {
+      background: rgba(8,12,18,.95);
+      backdrop-filter: blur(16px);
+      border-right: 1px solid var(--border);
+      padding: 22px 14px 22px;
+      display: flex; flex-direction: column; gap: 3px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .side-brand {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 10px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+    .side-logo {
+      width: 40px; height: 40px; background: var(--gold); border-radius: 11px;
+      display: grid; place-items: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: #0d1117; flex-shrink: 0;
+    }
+    .side-brand-text h3 { font-size: 14px; font-weight: 700; line-height: 1.2; }
+    .side-brand-text small { color: var(--muted); font-size: 10.5px; }
+
+    .nav-section-label {
+      font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+      color: rgba(107,127,150,.5); padding: 10px 12px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; justify-content: space-between;
+      background: transparent; color: var(--muted); border: 1px solid transparent;
+      border-radius: 10px; padding: 9px 12px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+      text-align: left; width: 100%;
+      transition: all .13s;
+    }
+    .nav-item .ni-ico { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; margin-right: 2px; }
+    .nav-item .ni-label { flex: 1; }
+    .nav-item .ni-badge {
+      font-size: 9px; font-weight: 700; background: rgba(245,197,66,.18);
+      color: var(--gold); border-radius: 999px; padding: 2px 7px; letter-spacing: .04em;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.055); color: var(--text); border-color: var(--border); }
+    .nav-item.active { background: rgba(245,197,66,.1); color: var(--gold); border-color: rgba(245,197,66,.18); }
+    .nav-spacer { flex: 1; min-height: 12px; }
+    .nav-item.nav-logout { color: rgba(252,165,165,.7); }
+    .nav-item.nav-logout:hover { background: rgba(240,92,92,.1); border-color: rgba(240,92,92,.18); color: #fca5a5; }
+
+    main { padding: 28px 28px 40px; overflow: auto; min-width: 0; }
+
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; gap: 16px; flex-wrap: wrap; }
+    .topbar-left h1 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: .03em; line-height: 1; }
+    .topbar-left h1 em { color: var(--gold); font-style: normal; }
+    .topbar-left p { color: var(--muted); margin-top: 5px; font-size: 12.5px; }
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; }
+    .toolbar select { width: auto; padding: 9px 12px; font-size: 12.5px; border-radius: 10px; }
+
+    /* loading & error states */
+    .loading-bar {
+      height: 3px; background: linear-gradient(90deg, var(--gold), var(--green), var(--blue));
+      border-radius: 99px; position: fixed; top: 0; left: 0;
+      transition: width .3s; z-index: 9999;
+    }
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--card2); border: 1px solid var(--border2); border-radius: 14px;
+      padding: 14px 18px; max-width: 320px; font-size: 13px; line-height: 1.5;
+      box-shadow: var(--shadow); animation: toastIn .25s ease both;
+      display: flex; align-items: center; gap: 10px;
+    }
+    @keyframes toastIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    .toast.success { border-color: rgba(46,204,138,.3); }
+    .toast.error { border-color: rgba(240,92,92,.3); }
+    .toast.info { border-color: rgba(74,179,244,.3); }
+
+    /* ═══════════════════════════════
+       SECTIONS
+    ═══════════════════════════════ */
+    .section { display: none; animation: fadeIn .2s ease both; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+    /* ── GRIDS ── */
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 13px; margin-bottom: 14px; }
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 13px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+
+    /* ── PANEL ── */
+    .panel {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px;
+    }
+    .panel-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .panel-sub { color: var(--muted); font-size: 11.5px; margin-bottom: 13px; }
+
+    /* ── STAT CARDS ── */
+    .stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+    .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: .02em; line-height: 1; margin-top: 6px; }
+    .stat-value.gold { color: var(--gold); }
+    .stat-value.green { color: var(--green); }
+    .stat-accent { width: 28px; height: 3px; background: var(--gold); border-radius: 2px; margin-top: 10px; }
+    .stat-delta { font-size: 11px; margin-top: 6px; font-weight: 600; }
+    .stat-delta.up { color: var(--green); }
+    .stat-delta.down { color: var(--red); }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; padding: 9px 8px; border-bottom: 1px solid var(--border); font-weight: 600; text-align: left; white-space: nowrap; }
+    td { padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,.03); vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: rgba(255,255,255,.022); }
+    .player-cell { display: flex; align-items: center; gap: 9px; }
+    .mini-av {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(245,197,66,.13); color: var(--gold);
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 900; flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .mini-av.softball { background: rgba(74,179,244,.13); color: var(--blue); }
+    .num { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    strong.ovr { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); }
+    .sport-tag {
+      font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; letter-spacing: .06em;
+    }
+    .sport-tag.baseball { background: rgba(245,197,66,.12); color: var(--gold); border: 1px solid rgba(245,197,66,.2); }
+    .sport-tag.softball { background: rgba(74,179,244,.12); color: var(--blue); border: 1px solid rgba(74,179,244,.2); }
+
+    /* ── PLAYER PROFILE ── */
+    .profile-hero { display: grid; grid-template-columns: 1fr auto; gap: 13px; margin-bottom: 13px; align-items: stretch; }
+    .profile-left { display: flex; align-items: center; gap: 20px; }
+    .avatar {
+      width: 88px; height: 88px; border-radius: 22px; flex-shrink: 0;
+      background: linear-gradient(135deg, #1d2e44, #0a1422);
+      border: 2px solid rgba(245,197,66,.35);
+      display: grid; place-items: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold);
+    }
+    .avatar.softball-av { border-color: rgba(74,179,244,.35); color: var(--blue); }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .badge {
+      padding: 4px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
+    }
+    .badge-gold { background: rgba(245,197,66,.14); border: 1px solid rgba(245,197,66,.28); color: #fde68a; }
+    .badge-blue { background: rgba(74,179,244,.14); border: 1px solid rgba(74,179,244,.28); color: #bae6fd; }
+    .badge-green { background: rgba(46,204,138,.14); border: 1px solid rgba(46,204,138,.28); color: #bbf7d0; }
+    .badge-purple { background: rgba(167,139,250,.14); border: 1px solid rgba(167,139,250,.28); color: #ddd6fe; }
+
+    .grade-wrap { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; padding: 16px; }
+    .grade-ring { width: 100px; height: 100px; border-radius: 50%; display: grid; place-items: center; }
+    .grade-inner { width: 78px; height: 78px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; text-align: center; }
+    .grade-inner span { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); display: block; line-height: 1; }
+    .grade-inner small { font-size: 9.5px; color: var(--muted); letter-spacing: .1em; }
+
+    /* ── TREND INDICATORS ── */
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+    .flat { color: var(--blue); }
+
+    /* ── PROGRESS BAR ── */
+    .pbar { width: 100%; height: 5px; background: rgba(255,255,255,.07); border-radius: 999px; overflow: hidden; margin-top: 7px; }
+    .pfill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 999px; transition: width .6s ease; }
+
+    /* ── NOTES ── */
+    .note-card { background: rgba(255,255,255,.035); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .note-card strong { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: .09em; }
+    .note-card p { color: var(--muted); font-size: 12.5px; margin-top: 6px; line-height: 1.6; }
+
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 14px; }
+    .form-grid input, .form-grid select { font-size: 13px; padding: 10px 12px; }
+
+    /* ── AI INSIGHT PANEL ── */
+    .ai-panel {
+      background: linear-gradient(135deg, rgba(167,139,250,.06), rgba(74,179,244,.04));
+      border: 1px solid rgba(167,139,250,.2);
+      border-radius: 16px; padding: 18px;
+    }
+    .ai-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); box-shadow: 0 0 8px var(--purple); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+    .ai-panel p { color: rgba(238,242,247,.8); font-size: 13px; line-height: 1.7; }
+    .ai-panel .ai-loading { color: var(--muted); font-style: italic; font-size: 12.5px; }
+
+    /* ── ADMIN ── */
+    .admin-list { color: var(--muted); font-size: 13px; padding-left: 18px; line-height: 2.2; }
+
+    /* ── CONFIG BANNER ── */
+    .config-banner {
+      background: rgba(245,197,66,.07); border: 1px dashed rgba(245,197,66,.3);
+      border-radius: 14px; padding: 16px 20px; margin-bottom: 18px;
+      font-size: 13px; color: rgba(245,197,66,.85); line-height: 1.6;
+    }
+    .config-banner strong { color: var(--gold); }
+    .config-banner code { background: rgba(0,0,0,.3); border-radius: 5px; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+    .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .empty-state p { font-size: 13px; line-height: 1.6; }
+
+    canvas { max-width: 100%; display: block; }
+
+    /* ═══════════════════════════════
+       MOBILE
+    ═══════════════════════════════ */
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+      .app { grid-template-columns: 1fr; }
+      aside {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        height: auto; width: 100%; flex-direction: row;
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+        border-right: 0; border-top: 1px solid var(--border);
+        overflow-x: auto; z-index: 100; gap: 2px;
+        align-items: center;
+      }
+      .side-brand, .nav-section-label, .nav-spacer, .nav-item.nav-logout { display: none; }
+      .nav-item {
+        flex-direction: column; gap: 2px; padding: 8px 6px;
+        min-width: 56px; font-size: 9px; border-radius: 10px;
+        justify-content: center; align-items: center;
+      }
+      .nav-item .ni-label { display: none; }
+      .nav-item .ni-ico { font-size: 18px; margin: 0; width: auto; }
+      .nav-item .ni-badge { display: none; }
+      main { padding: 18px 16px 100px; }
+      .g4, .g3, .g2 { grid-template-columns: 1fr 1fr; }
+      .profile-hero { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .topbar { flex-direction: column; gap: 10px; }
+      .topbar-left h1 { font-size: 30px; }
+    }
+    @media (max-width: 520px) {
+      .g4, .g3 { grid-template-columns: 1fr 1fr; }
+      .g2 { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .login-card { padding: 28px 22px; }
+      .login-card h1 { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING BAR -->
+<div class="loading-bar hidden" id="loadBar" style="width:0"></div>
+
+<!-- LOGIN -->
+<section id="loginView" class="login-wrap">
+  <div class="login-card">
+    <div class="brand-lockup">
+      <div class="brand-icon">ACA</div>
+      <div class="brand-text">
+        <strong>ACA PLAYER360</strong>
+        <span>Baseball & Softball Development</span>
+      </div>
+    </div>
+    <h1>ALAMO<br><em>PLAYER</em> HUB</h1>
+    <p class="sub">ESPN-style player development dashboard. Track grades, metrics, and AI-powered insights for every athlete.</p>
+    <div class="field-wrap">
+      <label class="fl">Team Access Code</label>
+      <input id="codeInput" placeholder="e.g. ACA-12U-BLACK" autocomplete="off"
+             onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="btn btn-gold" onclick="doLogin()">
+      <span>ENTER DASHBOARD</span><span>→</span>
+    </button>
+    <div class="demo-chips">
+      <div class="chip" onclick="quickLogin('ACA-12U-BLACK')"><strong>Parent View</strong>ACA-12U-BLACK</div>
+      <div class="chip" onclick="quickLogin('COACH-ACA')"><strong>Coach View</strong>COACH-ACA</div>
+      <div class="chip" onclick="quickLogin('ADMIN-ACA')"><strong>Admin View</strong>ADMIN-ACA</div>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="appView" class="app hidden">
+  <aside>
+    <div class="side-brand">
+      <div class="side-logo">ACA</div>
+      <div class="side-brand-text">
+        <h3>Player360</h3>
+        <small id="roleLbl">Parent View</small>
+      </div>
+    </div>
+
+    <div class="nav-section-label">Dashboard</div>
+    <button class="nav-item active" onclick="show('overview',this)">
+      <span class="ni-ico">⌁</span><span class="ni-label">Overview</span>
+    </button>
+    <button class="nav-item" onclick="show('players',this)">
+      <span class="ni-ico">▦</span><span class="ni-label">Players</span>
+    </button>
+    <button class="nav-item" onclick="show('leaderboards',this)">
+      <span class="ni-ico">★</span><span class="ni-label">Leaderboards</span>
+    </button>
+    <button class="nav-item" onclick="show('profile',this)">
+      <span class="ni-ico">◉</span><span class="ni-label">Player Card</span>
+    </button>
+
+    <div class="nav-section-label coach-only" style="display:none">Coaching</div>
+    <button class="nav-item coach-only" onclick="show('eval',this)" style="display:none">
+      <span class="ni-ico">✎</span><span class="ni-label">Evaluation</span>
+    </button>
+    <button class="nav-item coach-only" onclick="show('coachNotes',this)" style="display:none">
+      <span class="ni-ico">☰</span><span class="ni-label">Coach Notes</span>
+    </button>
+    <button class="nav-item coach-only" onclick="show('addPlayer',this)" style="display:none">
+      <span class="ni-ico">＋</span><span class="ni-label">Add Player</span>
+    </button>
+
+    <div class="nav-section-label admin-only" style="display:none">Admin</div>
+    <button class="nav-item admin-only" onclick="show('admin',this)" style="display:none">
+      <span class="ni-ico">⚙</span><span class="ni-label">Admin</span>
+    </button>
+
+    <div class="nav-spacer"></div>
+    <button class="nav-item" onclick="loadFromSheets()" title="Refresh data from Google Sheets">
+      <span class="ni-ico">↺</span><span class="ni-label">Refresh</span>
+    </button>
+    <button class="nav-item nav-logout" onclick="location.reload()">
+      <span class="ni-ico">⏻</span><span class="ni-label">Log Out</span>
+    </button>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 id="pageTitle">TEAM <em>OVERVIEW</em></h1>
+        <p id="pageSub">Track performance, rankings, trends, and player development.</p>
+      </div>
+      <div class="toolbar">
+        <select id="sportFilter" onchange="renderAll()">
+          <option value="All">All Sports</option>
+          <option value="Baseball">Baseball</option>
+          <option value="Softball">Softball</option>
+        </select>
+        <select id="teamFilter" onchange="renderAll()"></select>
+        <select id="playerSel" onchange="renderProfile()"></select>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="section active">
+      <div id="configBanner" class="config-banner hidden">
+        ⚠️ <strong>Connect Your Google Sheet:</strong> Open this file and set <code>SHEETS_URL</code> to your Apps Script web app URL. See <code>Code.gs</code> for setup instructions. Showing demo data for now.
+      </div>
+      <div class="g4" id="statCards">
+        <div class="panel"><div class="stat-label">Total Players</div><div class="stat-value gold" id="sTot">—</div><div class="stat-accent"></div></div>
+        <div class="panel"><div class="stat-label">Avg OVR Grade</div><div class="stat-value gold" id="sAvg">—</div><div class="stat-accent"></div></div>
+        <div class="panel"><div class="stat-label">Top Exit Velo</div><div class="stat-value" id="sExit">—</div><div class="stat-accent"></div></div>
+        <div class="panel"><div class="stat-label">Best 60 Time</div><div class="stat-value" id="s60">—</div><div class="stat-accent"></div></div>
+      </div>
+      <div class="g2" style="margin-bottom:13px">
+        <div class="panel">
+          <div class="panel-title">Team Skill Radar</div>
+          <div class="panel-sub">Average skill profile by category</div>
+          <canvas id="radarC" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Top Metrics</div>
+          <div class="panel-sub">Best per category across roster</div>
+          <table id="topMet"></table>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">Grade Distribution</div>
+          <div class="panel-sub">OVR spread across athletes</div>
+          <canvas id="distC" height="160"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Sport Breakdown</div>
+          <div class="panel-sub">Baseball vs Softball roster split</div>
+          <canvas id="donutC" height="160"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYERS -->
+    <section id="players" class="section">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:13px">
+          <div>
+            <div class="panel-title">Team Roster</div>
+            <div class="panel-sub" style="margin-bottom:0">Sorted by overall grade</div>
+          </div>
+          <input id="searchInput" placeholder="Search players…" style="width:200px;padding:8px 12px;font-size:12.5px" oninput="renderRoster()" />
+        </div>
+        <table id="rosterTbl"></table>
+      </div>
+    </section>
+
+    <!-- LEADERBOARDS -->
+    <section id="leaderboards" class="section">
+      <div class="g2" style="margin-bottom:13px">
+        <div class="panel">
+          <div class="panel-title">Hitting Leaderboard</div>
+          <div class="panel-sub">Ranked by exit velocity</div>
+          <table id="hitBrd"></table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Pitching Leaderboard</div>
+          <div class="panel-sub">Ranked by fastball velocity</div>
+          <table id="pitBrd"></table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Catching / Athletic Leaderboard</div>
+        <div class="panel-sub">Ranked by pop time</div>
+        <table id="catBrd"></table>
+      </div>
+    </section>
+
+    <!-- PLAYER PROFILE -->
+    <section id="profile" class="section">
+      <div class="profile-hero">
+        <div class="panel profile-left">
+          <div class="avatar" id="pAvatar">JS</div>
+          <div style="flex:1;min-width:0">
+            <h2 id="pName" style="font-size:20px;font-weight:700">—</h2>
+            <div style="color:var(--muted);font-size:12px;margin-top:4px;line-height:1.6" id="pMeta"></div>
+            <div class="badge-row" id="pBadges"></div>
+          </div>
+        </div>
+        <div class="panel" style="min-width:150px">
+          <div class="grade-wrap">
+            <div class="stat-label">Overall Grade</div>
+            <div class="grade-ring" id="gRing">
+              <div class="grade-inner"><span id="pGrade">—</span><small>OVR</small></div>
+            </div>
+            <div id="pRank" style="color:var(--muted);font-size:11px;text-align:center"></div>
+          </div>
+        </div>
+      </div>
+      <div class="g3" style="margin-bottom:13px">
+        <div class="panel">
+          <div class="panel-title">Performance Trend</div>
+          <div class="panel-sub">Across evaluation sessions</div>
+          <canvas id="trendC" height="200"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Current Metrics</div>
+          <div class="panel-sub">Latest evaluation data</div>
+          <table id="pMets"></table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Development</div>
+          <div class="panel-sub">Goals and coach focus areas</div>
+          <div class="note-card"><strong>Goal</strong><p id="pGoal"></p></div>
+          <div class="note-card"><strong>Coach Focus</strong><p id="pNote"></p></div>
+        </div>
+      </div>
+      <!-- AI INSIGHT -->
+      <div class="ai-panel" id="aiPanel">
+        <div class="ai-panel-header">
+          <div class="ai-dot"></div>
+          <strong style="font-size:13px;letter-spacing:.04em">AI PLAYER INSIGHT</strong>
+          <button class="btn btn-purple btn-sm" onclick="getAIInsight()" id="aiBtn" style="margin-left:auto">Generate Analysis</button>
+        </div>
+        <p id="aiText" class="ai-loading">Click "Generate Analysis" to get an AI-powered development report for this player.</p>
+      </div>
+    </section>
+
+    <!-- EVALUATION -->
+    <section id="eval" class="section">
+      <div class="panel">
+        <div class="panel-title">Add / Update Evaluation</div>
+        <div class="panel-sub" id="evalStatus">Updates save to Google Sheets when SHEETS_URL is configured.</div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label class="fl">Select Player</label>
+            <select id="evalPl"></select>
+          </div>
+          <div>
+            <label class="fl">Sport</label>
+            <select id="evalSport">
+              <option value="Baseball">Baseball</option>
+              <option value="Softball">Softball</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div><label class="fl">Exit Velo (MPH)</label><input id="eExit" type="number" placeholder="e.g. 78" /></div>
+          <div><label class="fl">Arm Velo (MPH)</label><input id="eArm" type="number" placeholder="e.g. 68" /></div>
+          <div><label class="fl">Pop Time (sec)</label><input id="ePop" type="number" step="0.01" placeholder="e.g. 2.05" /></div>
+          <div><label class="fl">Exchange (sec)</label><input id="eExch" type="number" step="0.01" placeholder="e.g. 0.65" /></div>
+          <div><label class="fl">60 Time (sec)</label><input id="e60" type="number" step="0.01" placeholder="e.g. 7.20" /></div>
+          <div><label class="fl">FB Velo (MPH)</label><input id="eFB" type="number" placeholder="e.g. 70" /></div>
+          <div><label class="fl">Strike %</label><input id="eSt" type="number" placeholder="e.g. 65" /></div>
+          <div><label class="fl">Command %</label><input id="eCmd" type="number" placeholder="e.g. 60" /></div>
+          <div><label class="fl">Hand Speed (mph)</label><input id="eHand" type="number" placeholder="e.g. 24" /></div>
+          <div><label class="fl">Hitting Grade</label><input id="eHit" type="number" placeholder="50-99" /></div>
+          <div><label class="fl">Defense Grade</label><input id="eDef" type="number" placeholder="50-99" /></div>
+          <div><label class="fl">Athletic Grade</label><input id="eAth" type="number" placeholder="50-99" /></div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-gold" style="width:auto;padding:12px 28px" onclick="saveEval()">SAVE TO SHEETS</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearEvalForm()">Clear Form</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- COACH NOTES -->
+    <section id="coachNotes" class="section">
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">Coach Notes</div>
+          <div class="panel-sub">Private development observations</div>
+          <label class="fl" style="margin-top:8px">Player</label>
+          <select id="notePl" style="margin-bottom:10px"></select>
+          <label class="fl">Note</label>
+          <textarea id="noteText" placeholder="Development note, technique cue, session observation…"></textarea>
+          <button class="btn btn-gold" style="width:auto;margin-top:12px;padding:12px 24px" onclick="saveNote()">SAVE NOTE</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Development Progress</div>
+          <div class="panel-sub">Player notes and grade bars</div>
+          <div id="devList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD PLAYER -->
+    <section id="addPlayer" class="section">
+      <div class="panel">
+        <div class="panel-title">Add New Player</div>
+        <div class="panel-sub">Player will be added to the connected Google Sheet.</div>
+        <div class="form-grid">
+          <div><label class="fl">Full Name</label><input id="npName" placeholder="First Last" /></div>
+          <div><label class="fl">Sport</label>
+            <select id="npSport"><option>Baseball</option><option>Softball</option></select>
+          </div>
+          <div><label class="fl">Team</label><input id="npTeam" placeholder="e.g. 12U Black" /></div>
+          <div><label class="fl">Age</label><input id="npAge" type="number" placeholder="Age" /></div>
+          <div><label class="fl">Primary Position</label><input id="npPos" placeholder="C, P, SS…" /></div>
+          <div><label class="fl">Secondary Pos</label><input id="npPos2" placeholder="e.g. P / 3B" /></div>
+          <div><label class="fl">Bats</label>
+            <select id="npBats"><option>R</option><option>L</option><option>S</option></select>
+          </div>
+          <div><label class="fl">Throws</label>
+            <select id="npThrows"><option>R</option><option>L</option></select>
+          </div>
+          <div><label class="fl">Initial Goal</label><input id="npGoal" placeholder="Development goal…" /></div>
+        </div>
+        <button class="btn btn-gold" style="width:auto;margin-top:20px;padding:12px 28px" onclick="addNewPlayer()">ADD PLAYER TO SHEET</button>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="admin" class="section">
+      <div class="g3">
+        <div class="panel">
+          <div class="panel-title">Access Codes</div>
+          <div class="panel-sub">Team login codes</div>
+          <table>
+            <tr><th>Team</th><th>Code</th></tr>
+            <tr><td>12U Black</td><td class="num" style="color:var(--gold)">ACA-12U-BLACK</td></tr>
+            <tr><td>14U Gold</td><td class="num" style="color:var(--gold)">ACA-14U-GOLD</td></tr>
+            <tr><td>HS Prospects</td><td class="num" style="color:var(--gold)">ACA-HS-PROSPECT</td></tr>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Connection Status</div>
+          <div class="panel-sub">Google Sheets integration</div>
+          <div id="connStatus">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <div id="connDot" style="width:8px;height:8px;border-radius:50%;background:var(--red)"></div>
+              <span id="connText" style="font-size:13px">Not connected</span>
+            </div>
+            <div style="color:var(--muted);font-size:12px;line-height:1.7">
+              Set <code style="background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">SHEETS_URL</code> in the script to connect.
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="loadFromSheets()">Test Connection</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Eval Completion</div>
+          <div class="panel-sub">Current testing cycle</div>
+          <div class="pbar" style="height:10px;margin-top:16px"><div class="pfill" id="evalPct" style="width:0%"></div></div>
+          <div class="stat-value gold" style="margin-top:12px" id="evalPctNum">—</div>
+          <div style="color:var(--muted);font-size:12px;margin-top:4px">of roster evaluated this cycle</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  ★  CONFIGURATION — update these two lines  ★
+// ══════════════════════════════════════════════════════════════
+const SHEETS_URL   = "";          // Paste your Apps Script web app URL here
+const COACH_TOKEN  = "ACA_SECRET_2024"; // Must match SECRET_TOKEN in Code.gs
+// ══════════════════════════════════════════════════════════════
+
+// ── Demo data (fallback when SHEETS_URL is not set) ──────────
+const DEMO_PLAYERS = [
+  {id:1,name:"Jaxon Smith",sport:"Baseball",team:"12U Black",code:"ACA-12U-BLACK",age:12,primary:"C",secondary:"P / 3B",bats:"R",throws:"R",pop:2.18,exchange:.68,arm:67,hand:22,exit:73,sixty:7.62,fb:66,change:58,curve:55,strike:64,command:58,hitting:84,defense:88,pitching:81,catching:91,athletic:80,note:"Strong receiving foundation. Needs faster foot replacement on throws.",goals:"Get exchange time below 0.65 and improve throwing accuracy to second base."},
+  {id:2,name:"Mason Torres",sport:"Baseball",team:"12U Black",code:"ACA-12U-BLACK",age:12,primary:"P",secondary:"1B / OF",bats:"L",throws:"L",pop:2.45,exchange:.76,arm:63,hand:21,exit:76,sixty:7.88,fb:68,change:59,curve:56,strike:71,command:63,hitting:86,defense:77,pitching:89,catching:65,athletic:75,note:"Strike thrower. Needs better changeup separation.",goals:"Increase command percentage above 68%."},
+  {id:3,name:"Avery Johnson",sport:"Softball",team:"14U Gold",code:"ACA-14U-GOLD",age:14,primary:"SS",secondary:"C / OF",bats:"R",throws:"R",pop:2.03,exchange:.64,arm:61,hand:24,exit:69,sixty:7.31,fb:58,change:46,curve:0,strike:68,command:61,hitting:88,defense:91,pitching:76,catching:86,athletic:90,note:"Explosive athlete with strong hands. Projects as premium middle infielder.",goals:"Maintain lower half direction through contact."},
+  {id:4,name:"Landon Cruz",sport:"Baseball",team:"14U Gold",code:"ACA-14U-GOLD",age:14,primary:"C",secondary:"3B / P",bats:"R",throws:"R",pop:1.98,exchange:.61,arm:74,hand:25,exit:82,sixty:7.12,fb:76,change:65,curve:63,strike:66,command:59,hitting:91,defense:89,pitching:84,catching:94,athletic:87,note:"High-end catcher profile. Needs consistency receiving low strike.",goals:"Hold pop time under 2.00 with 80% throwing accuracy."},
+  {id:5,name:"Camila Reyes",sport:"Softball",team:"HS Prospects",code:"ACA-HS-PROSPECT",age:16,primary:"P",secondary:"1B",bats:"R",throws:"R",pop:2.30,exchange:.72,arm:64,hand:23,exit:74,sixty:7.45,fb:63,change:49,curve:55,strike:74,command:69,hitting:85,defense:82,pitching:93,catching:70,athletic:84,note:"Advanced pitchability. Commands both sides well.",goals:"Improve rise/change tunneling and first pitch strike rate."},
+  {id:6,name:"Ethan Walker",sport:"Baseball",team:"HS Prospects",code:"ACA-HS-PROSPECT",age:17,primary:"OF",secondary:"P",bats:"R",throws:"R",pop:2.20,exchange:.70,arm:83,hand:27,exit:91,sixty:6.82,fb:84,change:73,curve:70,strike:62,command:55,hitting:94,defense:88,pitching:86,catching:66,athletic:95,note:"Power/speed profile. Needs better strike-zone control.",goals:"Improve command and reduce chase rate."}
+];
+
+// ── State ────────────────────────────────────────────────────
+let allPlayers = [];
+let role = "parent";
+let teamCode = "";
+let charts = {};
+let sheetsConnected = false;
+
+// ── Helpers ─────────────────────────────────────────────────
+const ini = n => n.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase();
+const ovr = p => Math.round(p.hitting*.25 + p.defense*.22 + p.athletic*.18 + Math.max(p.pitching||0, p.catching||0)*.25 + 8);
+const isSoftball = p => (p.sport||"").toLowerCase() === "softball";
+
+function visible() {
+  let list = [...allPlayers];
+  const sf = document.getElementById("sportFilter")?.value || "All";
+  if (sf !== "All") list = list.filter(p => p.sport === sf);
+  if (role === "parent") {
+    list = list.filter(p => (p.code||"").toUpperCase() === teamCode || (p.team||"").toLowerCase().replace(/\s+/g,"-") === teamCode.toLowerCase().replace(/^aca-/,"").replace(/\s+/g,"-"));
+  } else {
+    const t = document.getElementById("teamFilter")?.value || "All Teams";
+    if (t !== "All Teams") list = list.filter(p => p.team === t);
+  }
+  return list;
+}
+
+// ── Toast notifications ──────────────────────────────────────
+function toast(msg, type = "info", dur = 3200) {
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  const icons = { success:"✓", error:"✕", info:"ℹ" };
+  el.innerHTML = `<span style="font-size:16px">${icons[type]||"ℹ"}</span><span>${msg}</span>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), dur);
+}
+
+// ── Loading bar ──────────────────────────────────────────────
+function setLoad(pct) {
+  const bar = document.getElementById("loadBar");
+  bar.classList.remove("hidden");
+  bar.style.width = pct + "%";
+  if (pct >= 100) setTimeout(() => bar.classList.add("hidden"), 400);
+}
+
+// ── Google Sheets fetch ──────────────────────────────────────
+async function loadFromSheets() {
+  if (!SHEETS_URL) {
+    allPlayers = DEMO_PLAYERS;
+    document.getElementById("configBanner")?.classList.remove("hidden");
+    setConnStatus(false);
+    renderAll();
+    return;
+  }
+  setLoad(20);
+  try {
+    const res = await fetch(`${SHEETS_URL}?action=getPlayers`, { cache:"no-store" });
+    const data = await res.json();
+    setLoad(80);
+    if (data.success && data.players?.length) {
+      allPlayers = data.players;
+      sheetsConnected = true;
+      setConnStatus(true);
+      toast("Data loaded from Google Sheets ✓", "success");
+      document.getElementById("configBanner")?.classList.add("hidden");
+    } else {
+      throw new Error(data.error || "No players returned");
+    }
+  } catch(err) {
+    console.warn("Sheets error:", err.message, "— using demo data");
+    allPlayers = DEMO_PLAYERS;
+    toast("Using demo data. Check SHEETS_URL.", "error");
+    setConnStatus(false);
+  }
+  setLoad(100);
+  renderAll();
+}
+
+function setConnStatus(ok) {
+  const dot = document.getElementById("connDot");
+  const txt = document.getElementById("connText");
+  if (!dot) return;
+  dot.style.background = ok ? "var(--green)" : "var(--red)";
+  txt.textContent = ok ? "Connected to Google Sheets" : "Not connected (demo mode)";
+}
+
+// ── POST to Sheets ───────────────────────────────────────────
+async function postToSheets(action, data) {
+  if (!SHEETS_URL) return { demo: true };
+  const res = await fetch(SHEETS_URL, {
+    method: "POST",
+    body: JSON.stringify({ action, token: COACH_TOKEN, data }),
+    headers: { "Content-Type": "application/json" }
+  });
+  return res.json();
+}
+
+// ── LOGIN ────────────────────────────────────────────────────
+function quickLogin(code) {
+  document.getElementById("codeInput").value = code;
+  doLogin();
+}
+
+async function doLogin() {
+  const c = document.getElementById("codeInput").value.trim().toUpperCase();
+  if (!c) { toast("Enter an access code", "error"); return; }
+  teamCode = c;
+  role = c === "ADMIN-ACA" ? "admin" : c === "COACH-ACA" ? "coach" : "parent";
+
+  document.getElementById("loginView").classList.add("hidden");
+  document.getElementById("appView").classList.remove("hidden");
+  document.getElementById("roleLbl").innerText = { admin:"Admin View", coach:"Coach View", parent:"Parent View" }[role];
+
+  document.querySelectorAll(".coach-only").forEach(el => el.style.display = ["coach","admin"].includes(role) ? "" : "none");
+  document.querySelectorAll(".admin-only").forEach(el => el.style.display = role === "admin" ? "" : "none");
+
+  setupFilters();
+  await loadFromSheets();
+}
+
+function setupFilters() {
+  const tf = document.getElementById("teamFilter");
+  if (role === "parent") {
+    const team = DEMO_PLAYERS.find(p => p.code === teamCode)?.team || teamCode;
+    tf.innerHTML = `<option>${team}</option>`;
+    tf.disabled = true;
+  } else {
+    const teams = ["All Teams", ...new Set([...DEMO_PLAYERS, ...allPlayers].map(p=>p.team).filter(Boolean))];
+    tf.innerHTML = teams.map(t => `<option>${t}</option>`).join("");
+  }
+}
+
+function refreshDropdowns() {
+  const list = visible();
+  const opts = list.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
+  ["playerSel","evalPl","notePl"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = opts || '<option>No players</option>';
+  });
+}
+
+function show(id, btn) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const map = {
+    overview:["TEAM <em>OVERVIEW</em>","Track performance, rankings, trends, and player development."],
+    players:["TEAM <em>ROSTER</em>","Full roster with grades, positions, and athlete snapshots."],
+    leaderboards:["<em>LEADERBOARDS</em>","Ranked by metrics across all teams."],
+    profile:["PLAYER <em>CARD</em>","ESPN-style profile with grades, trends, AI insights, and goals."],
+    eval:["<em>EVALUATION</em> ENTRY","Update testing results — saves directly to Google Sheets."],
+    coachNotes:["COACH <em>NOTES</em>","Private development notes and progress tracking."],
+    addPlayer:["<em>ADD</em> PLAYER","Register a new athlete to the Google Sheet."],
+    admin:["ADMIN <em>CONTROL</em>","Team codes, connection status, and system controls."]
+  };
+  const info = map[id] || map.overview;
+  document.getElementById("pageTitle").innerHTML = info[0];
+  document.getElementById("pageSub").innerText = info[1];
+  renderAll();
+}
+
+// ── RENDER ALL ───────────────────────────────────────────────
+function renderAll() {
+  refreshDropdowns();
+  renderOverview();
+  renderRoster();
+  renderLeaderboards();
+  renderProfile();
+  renderDev();
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────
+function renderOverview() {
+  const list = visible();
+  if (!list.length) {
+    ["sTot","sAvg","sExit","s60"].forEach(id => document.getElementById(id).innerText = "—");
+    return;
+  }
+  document.getElementById("sTot").innerText = list.length;
+  document.getElementById("sAvg").innerText = Math.round(list.reduce((s,p)=>s+ovr(p),0)/list.length);
+  document.getElementById("sExit").innerText = Math.max(...list.map(p=>p.exit||0)) + " MPH";
+  const best60 = Math.min(...list.map(p=>p.sixty||99));
+  document.getElementById("s60").innerText = best60 < 99 ? best60.toFixed(2) : "—";
+
+  // Eval completion
+  const withExit = list.filter(p => p.exit > 0);
+  const pct = Math.round(withExit.length / list.length * 100);
+  const pctEl = document.getElementById("evalPct");
+  const pctNum = document.getElementById("evalPctNum");
+  if (pctEl) pctEl.style.width = pct + "%";
+  if (pctNum) pctNum.innerText = pct + "%";
+
+  const avg = k => Math.round(list.reduce((s,p)=>s+(parseFloat(p[k])||0),0)/list.length);
+
+  // Radar
+  if (charts.radar) charts.radar.destroy();
+  charts.radar = new Chart(document.getElementById("radarC"), {
+    type:"radar",
+    data:{
+      labels:["Hitting","Defense","Pitching","Catching","Athletic"],
+      datasets:[{
+        label:"Team Avg",
+        data:[avg("hitting"),avg("defense"),avg("pitching"),avg("catching"),avg("athletic")],
+        borderColor:"#f5c542",backgroundColor:"rgba(245,197,66,.1)",
+        pointBackgroundColor:"#f5c542",borderWidth:2,pointRadius:4
+      }]
+    },
+    options:{
+      scales:{r:{min:40,max:100,ticks:{display:false},grid:{color:"rgba(255,255,255,.08)"},angleLines:{color:"rgba(255,255,255,.08)"},pointLabels:{color:"#eef2f7",font:{size:11,family:"DM Sans"}}}},
+      plugins:{legend:{labels:{color:"#7a8fa6",font:{size:11}}}}
+    }
+  });
+
+  // Distribution bar
+  const bins = [50,60,70,80,90,100];
+  const binLabels = ["50-59","60-69","70-79","80-89","90-99","100"];
+  const counts = bins.map((lo,i) => list.filter(p=>{ const g=ovr(p); return g>=lo&&g<(bins[i+1]||101); }).length);
+  if (charts.dist) charts.dist.destroy();
+  charts.dist = new Chart(document.getElementById("distC"), {
+    type:"bar",
+    data:{
+      labels:binLabels,
+      datasets:[{label:"Players",data:counts,backgroundColor:"rgba(245,197,66,.55)",borderColor:"#f5c542",borderWidth:1,borderRadius:6}]
+    },
+    options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#7a8fa6",font:{size:11}},grid:{display:false}},y:{ticks:{color:"#7a8fa6",font:{size:11},stepSize:1},grid:{color:"rgba(255,255,255,.05)"}}}}
+  });
+
+  // Donut
+  const bb = list.filter(p=>p.sport==="Baseball").length;
+  const sb = list.filter(p=>p.sport==="Softball").length;
+  if (charts.donut) charts.donut.destroy();
+  charts.donut = new Chart(document.getElementById("donutC"), {
+    type:"doughnut",
+    data:{
+      labels:["Baseball","Softball"],
+      datasets:[{data:[bb,sb],backgroundColor:["rgba(245,197,66,.7)","rgba(74,179,244,.7)"],borderColor:["#f5c542","#4ab3f4"],borderWidth:1}]
+    },
+    options:{cutout:"65%",plugins:{legend:{labels:{color:"#7a8fa6",font:{size:12}}}}}
+  });
+
+  // Top metrics
+  const best=(k,lo,sfx)=>{const s=[...list].sort((a,b)=>lo?a[k]-b[k]:b[k]-a[k]);return{n:s[0].name,v:s[0][k]+sfx};};
+  const rows=[["🎯 Best Pop Time",best("pop",true," s")],["💪 Top Arm Velo",best("arm",false," MPH")],["🔥 Top Exit Velo",best("exit",false," MPH")],["⚡ Best 60 Time",best("sixty",true," s")]];
+  document.getElementById("topMet").innerHTML=`<tr><th>Metric</th><th>Player</th><th>Value</th></tr>`+
+    rows.map(r=>`<tr><td style="color:var(--muted)">${r[0]}</td><td><strong>${r[1].n}</strong></td><td><span class="num" style="color:var(--gold);font-weight:700">${r[1].v}</span></td></tr>`).join("");
+}
+
+// ── ROSTER ───────────────────────────────────────────────────
+function renderRoster() {
+  const q = (document.getElementById("searchInput")?.value||"").toLowerCase();
+  let list = [...visible()].sort((a,b)=>ovr(b)-ovr(a));
+  if (q) list = list.filter(p=>p.name.toLowerCase().includes(q)||p.team.toLowerCase().includes(q)||p.primary.toLowerCase().includes(q));
+  document.getElementById("rosterTbl").innerHTML =
+    `<tr><th>Player</th><th>Sport</th><th>Team</th><th>Pos</th><th>OVR</th><th>Exit</th><th>Arm</th><th>60 Time</th></tr>`+
+    (list.length ? list.map(p=>`<tr>
+      <td><div class="player-cell">
+        <div class="mini-av ${isSoftball(p)?'softball':''}">${ini(p.name)}</div>
+        <strong style="cursor:pointer" onclick="jumpToProfile(${p.id})">${p.name}</strong>
+      </div></td>
+      <td><span class="sport-tag ${isSoftball(p)?'softball':'baseball'}">${p.sport||'BB'}</span></td>
+      <td style="color:var(--muted);font-size:12px">${p.team}</td>
+      <td>${p.primary}</td>
+      <td><strong class="ovr">${ovr(p)}</strong></td>
+      <td class="num">${p.exit||'—'} MPH</td>
+      <td class="num">${p.arm||'—'} MPH</td>
+      <td class="num">${p.sixty||'—'}</td>
+    </tr>`).join("") :
+    `<tr><td colspan="8"><div class="empty-state"><div class="es-icon">🔍</div><h3>No players found</h3><p>Try a different search or filter.</p></div></td></tr>`);
+}
+
+function jumpToProfile(id) {
+  document.getElementById("playerSel").value = id;
+  show("profile", document.querySelector('.nav-item[onclick*="profile"]'));
+}
+
+// ── LEADERBOARDS ─────────────────────────────────────────────
+function renderLeaderboards() {
+  const list = visible();
+  const mkRow = p => `<tr><td><div class="player-cell"><div class="mini-av ${isSoftball(p)?'softball':''}">${ini(p.name)}</div>${p.name}</div></td>`;
+  document.getElementById("hitBrd").innerHTML=
+    `<tr><th>Player</th><th>Exit Velo</th><th>Hand Spd</th></tr>`+
+    [...list].sort((a,b)=>(b.exit||0)-(a.exit||0)).map(p=>mkRow(p)+`<td class="num" style="color:var(--gold)">${p.exit||'—'} MPH</td><td class="num">${p.hand||'—'}</td></tr>`).join("");
+  document.getElementById("pitBrd").innerHTML=
+    `<tr><th>Player</th><th>FB Velo</th><th>Strike%</th></tr>`+
+    [...list].sort((a,b)=>(b.fb||0)-(a.fb||0)).map(p=>mkRow(p)+`<td class="num" style="color:var(--gold)">${p.fb||'—'} MPH</td><td class="num">${p.strike||'—'}%</td></tr>`).join("");
+  document.getElementById("catBrd").innerHTML=
+    `<tr><th>Player</th><th>Pop Time</th><th>Exchange</th><th>Arm</th></tr>`+
+    [...list].filter(p=>p.pop>0).sort((a,b)=>(a.pop||99)-(b.pop||99)).map(p=>mkRow(p)+`<td class="num" style="color:var(--gold)">${p.pop}s</td><td class="num">${p.exchange}s</td><td class="num">${p.arm||'—'} MPH</td></tr>`).join("");
+}
+
+// ── PLAYER PROFILE ───────────────────────────────────────────
+function renderProfile() {
+  const list = visible();
+  if (!list.length) return;
+  const sid = Number(document.getElementById("playerSel").value)||list[0].id;
+  const p = list.find(x=>x.id===sid)||list[0];
+  const soft = isSoftball(p);
+
+  document.getElementById("pAvatar").innerText = ini(p.name);
+  document.getElementById("pAvatar").className = `avatar${soft?" softball-av":""}`;
+  document.getElementById("pName").innerText = p.name;
+  document.getElementById("pMeta").innerText = `${p.sport||"Baseball"} • ${p.team} • Age ${p.age} • ${p.primary}/${p.secondary} • B/T: ${p.bats}/${p.throws}`;
+
+  const g = ovr(p);
+  document.getElementById("pGrade").innerText = g;
+  document.getElementById("gRing").style.background = `conic-gradient(#f5c542 0 ${g}%, rgba(255,255,255,.08) ${g}% 100%)`;
+
+  // Rank
+  const ranked = [...list].sort((a,b)=>ovr(b)-ovr(a));
+  const rank = ranked.findIndex(x=>x.id===p.id)+1;
+  document.getElementById("pRank").innerText = `#${rank} of ${list.length} on roster`;
+
+  // Badges
+  const badges = [];
+  if (p.exit>=85) badges.push(["Power Bat 🔥","badge-gold"]);
+  else if (p.exit>=75) badges.push(["Solid Contact","badge-gold"]);
+  if (p.pop<=2.0) badges.push(["Elite Pop ⚡","badge-blue"]);
+  else if (p.pop<=2.15) badges.push(["Quick Release","badge-blue"]);
+  if (p.arm>=80) badges.push(["Top Arm 💪","badge-green"]);
+  else if (p.arm>=70) badges.push(["Strong Arm","badge-green"]);
+  if (p.sixty<=7.0) badges.push(["Speed Threat 🏃","badge-gold"]);
+  if (p.strike>=72) badges.push(["Strike Thrower","badge-purple"]);
+  if (g>=92) badges.push(["Elite Prospect","badge-green"]);
+  if (!badges.length) badges.push(["Development Prospect","badge-blue"]);
+  document.getElementById("pBadges").innerHTML = badges.map(b=>`<span class="badge ${b[1]}">${b[0]}</span>`).join("");
+
+  // Metrics table with trend icons
+  const T = (v,lo) => `<span class="${lo?'up':'up'}">↑</span>`;
+  document.getElementById("pMets").innerHTML =
+    `<tr><th>Metric</th><th>Value</th></tr>`+
+    [[p.pop>0,`Pop Time`,`${p.pop}s`],[p.exchange>0,`Exchange`,`${p.exchange}s`],[p.arm>0,`Arm Velo`,`${p.arm} MPH`],
+     [p.exit>0,`Exit Velo`,`${p.exit} MPH`],[p.sixty>0,`60 Time`,`${p.sixty}s`],
+     [p.fb>0,`FB Velo`,`${p.fb} MPH`],[p.strike>0,`Strike %`,`${p.strike}%`],[p.command>0,`Command %`,`${p.command}%`]]
+    .filter(r=>r[0]).map(r=>`<tr><td style="color:var(--muted)">${r[1]}</td><td class="num" style="color:var(--text)">${r[2]}</td></tr>`).join("");
+
+  document.getElementById("pGoal").innerText = p.goals||p.goal||"No goal set.";
+  document.getElementById("pNote").innerText = p.note||"No coach note yet.";
+
+  // Trend chart
+  if (charts.trend) charts.trend.destroy();
+  charts.trend = new Chart(document.getElementById("trendC"), {
+    type:"line",
+    data:{
+      labels:["Eval 1","Eval 2","Eval 3","Current"],
+      datasets:[
+        {label:"OVR Grade",data:[g-8,g-4,g-2,g],borderColor:"#f5c542",backgroundColor:"rgba(245,197,66,.08)",tension:.35,borderWidth:2,fill:true,pointBackgroundColor:"#f5c542",pointRadius:4},
+        {label:"Exit Velo",data:[Math.max(50,(p.exit||60)-7),(p.exit||60)-4,(p.exit||60)-2,p.exit||60],borderColor:"#2ecc8a",tension:.35,borderWidth:2,pointBackgroundColor:"#2ecc8a",pointRadius:4}
+      ]
+    },
+    options:{
+      plugins:{legend:{labels:{color:"#7a8fa6",font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:"#7a8fa6",font:{size:11}},grid:{color:"rgba(255,255,255,.04)"}},
+        y:{ticks:{color:"#7a8fa6",font:{size:11}},grid:{color:"rgba(255,255,255,.04)"}}
+      }
+    }
+  });
+
+  // Reset AI text on player change
+  document.getElementById("aiText").className = "ai-loading";
+  document.getElementById("aiText").innerText = 'Click "Generate Analysis" to get an AI-powered development report for this player.';
+}
+
+// ── AI INSIGHT ───────────────────────────────────────────────
+async function getAIInsight() {
+  const list = visible();
+  if (!list.length) return;
+  const sid = Number(document.getElementById("playerSel").value)||list[0].id;
+  const p = list.find(x=>x.id===sid)||list[0];
+  const g = ovr(p);
+
+  document.getElementById("aiBtn").disabled = true;
+  document.getElementById("aiBtn").innerText = "Analyzing…";
+  document.getElementById("aiText").className = "ai-loading";
+  document.getElementById("aiText").innerText = "Generating player analysis…";
+
+  const prompt = `You are an expert baseball/softball player development coach and scout. Analyze this player and provide a concise, actionable development report in 3-4 sentences.
+
+Player: ${p.name}
+Sport: ${p.sport}
+Age: ${p.age}
+Position: ${p.primary} / ${p.secondary}
+Overall Grade: ${g}/100
+
+Key Metrics:
+- Exit Velocity: ${p.exit||"N/A"} MPH
+- Arm Velocity: ${p.arm||"N/A"} MPH
+- Pop Time: ${p.pop||"N/A"} s
+- 60 Time: ${p.sixty||"N/A"}
+- FB Velocity: ${p.fb||"N/A"} MPH
+- Strike%: ${p.strike||"N/A"}%
+- Hitting Grade: ${p.hitting||"N/A"}
+- Defense Grade: ${p.defense||"N/A"}
+- Athletic Grade: ${p.athletic||"N/A"}
+
+Coach Note: ${p.note||"None"}
+Player Goal: ${p.goals||p.goal||"None"}
+
+Write a development report covering: (1) top strength to leverage, (2) primary development priority, (3) one specific drill or focus area, (4) short-term projection. Be specific to the metrics and avoid generic advice. Use coach-to-coach language.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1000,
+        messages:[{role:"user",content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c=>c.text||"").join("") || "Unable to generate analysis.";
+    document.getElementById("aiText").className = "";
+    document.getElementById("aiText").innerText = text;
+  } catch(err) {
+    document.getElementById("aiText").className = "ai-loading";
+    document.getElementById("aiText").innerText = "Analysis unavailable. Check your network connection.";
+  }
+
+  document.getElementById("aiBtn").disabled = false;
+  document.getElementById("aiBtn").innerText = "Regenerate";
+}
+
+// ── DEV LIST ─────────────────────────────────────────────────
+function renderDev() {
+  const list = visible();
+  const el = document.getElementById("devList");
+  if (!el) return;
+  el.innerHTML = list.map(p=>`
+    <div class="note-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <strong style="color:var(--text);font-size:13px">${p.name}</strong>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--gold)">${ovr(p)} OVR</span>
+      </div>
+      <p>${p.note||"No coach note."}</p>
+      <div class="pbar"><div class="pfill" style="width:${ovr(p)}%"></div></div>
+    </div>`).join("");
+}
+
+// ── SAVE EVALUATION ──────────────────────────────────────────
+async function saveEval() {
+  const id = Number(document.getElementById("evalPl").value);
+  const sport = document.getElementById("evalSport").value;
+  const p = allPlayers.find(x=>x.id===id);
+  if (!p) { toast("Player not found","error"); return; }
+
+  const getNum = eid => { const v=parseFloat(document.getElementById(eid).value); return isNaN(v)?"":v; };
+  const data = { id, name:p.name, sport,
+    exit:getNum("eExit"), arm:getNum("eArm"), pop:getNum("ePop"), exchange:getNum("eExch"),
+    sixty:getNum("e60"), fb:getNum("eFB"), strike:getNum("eSt"), command:getNum("eCmd"),
+    hand:getNum("eHand"), hitting:getNum("eHit"), defense:getNum("eDef"), athletic:getNum("eAth")
+  };
+
+  // Update local state immediately
+  Object.entries(data).forEach(([k,v]) => { if(v!=="") p[k] = v; });
+
+  if (SHEETS_URL) {
+    try {
+      setLoad(30);
+      const result = await postToSheets("saveEval", data);
+      setLoad(100);
+      if (result.success) toast("Saved to Google Sheets ✓","success");
+      else toast(result.error||"Save failed","error");
+    } catch(e) { toast("Network error saving to Sheets","error"); setLoad(100); }
+  } else {
+    toast("Saved locally (demo mode — set SHEETS_URL to persist)","info");
+  }
+  renderAll();
+}
+
+function clearEvalForm() {
+  ["eExit","eArm","ePop","eExch","e60","eFB","eSt","eCmd","eHand","eHit","eDef","eAth"].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+}
+
+// ── SAVE NOTE ────────────────────────────────────────────────
+async function saveNote() {
+  const id = Number(document.getElementById("notePl").value);
+  const p = allPlayers.find(x=>x.id===id);
+  const note = document.getElementById("noteText").value.trim();
+  if (!p||!note) { toast("Select a player and enter a note","error"); return; }
+
+  p.note = note;
+  if (SHEETS_URL) {
+    try {
+      const result = await postToSheets("saveNote",{id,name:p.name,sport:p.sport,note});
+      if (result.success) toast("Note saved to Sheets ✓","success");
+      else toast(result.error||"Save failed","error");
+    } catch(e) { toast("Network error","error"); }
+  } else {
+    toast("Note saved locally (demo mode)","info");
+  }
+  document.getElementById("noteText").value = "";
+  renderAll();
+}
+
+// ── ADD PLAYER ───────────────────────────────────────────────
+async function addNewPlayer() {
+  const name = document.getElementById("npName").value.trim();
+  if (!name) { toast("Enter player name","error"); return; }
+
+  const data = {
+    name, sport:document.getElementById("npSport").value,
+    team:document.getElementById("npTeam").value,
+    age:document.getElementById("npAge").value||"",
+    primary:document.getElementById("npPos").value,
+    secondary:document.getElementById("npPos2").value,
+    bats:document.getElementById("npBats").value,
+    throws:document.getElementById("npThrows").value,
+    goals:document.getElementById("npGoal").value,
+    hitting:70,defense:70,pitching:65,catching:65,athletic:72,
+    exit:0,arm:0,pop:0,exchange:0,sixty:0,fb:0,strike:0,command:0,active:"TRUE"
+  };
+
+  if (SHEETS_URL) {
+    try {
+      setLoad(30);
+      const result = await postToSheets("addPlayer",data);
+      setLoad(100);
+      if (result.success) {
+        data.id = result.id;
+        allPlayers.push(data);
+        toast(`${name} added to Sheets ✓`,"success");
+        setupFilters();
+        renderAll();
+      } else toast(result.error||"Add failed","error");
+    } catch(e) { toast("Network error","error"); setLoad(100); }
+  } else {
+    data.id = Math.max(...allPlayers.map(p=>p.id||0),0)+1;
+    data.code = teamCode;
+    allPlayers.push(data);
+    toast(`${name} added (demo mode)`,"info");
+    setupFilters();
+    renderAll();
+  }
+}
+</script>
+</body>
+</html>
