@@ -40,14 +40,11 @@
 
     .hidden { display: none !important; }
 
-    /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
 
-    /* ═══════════════════════════════
-       LOGIN
-    ═══════════════════════════════ */
+    /* LOGIN */
     .login-wrap {
       min-height: 100vh;
       display: grid;
@@ -144,9 +141,7 @@
     .chip:hover { background: rgba(245,197,66,.06); border-color: rgba(245,197,66,.2); }
     .chip strong { color: var(--text); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 2px; }
 
-    /* ═══════════════════════════════
-       APP SHELL
-    ═══════════════════════════════ */
+    /* APP SHELL */
     .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
 
     aside {
@@ -204,7 +199,6 @@
     .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 4px; }
     .toolbar select { width: auto; padding: 9px 12px; font-size: 12.5px; border-radius: 10px; }
 
-    /* loading & error states */
     .loading-bar {
       height: 3px; background: linear-gradient(90deg, var(--gold), var(--green), var(--blue));
       border-radius: 99px; position: fixed; top: 0; left: 0;
@@ -222,19 +216,15 @@
     .toast.error { border-color: rgba(240,92,92,.3); }
     .toast.info { border-color: rgba(74,179,244,.3); }
 
-    /* ═══════════════════════════════
-       SECTIONS
-    ═══════════════════════════════ */
+    /* SECTIONS */
     .section { display: none; animation: fadeIn .2s ease both; }
     .section.active { display: block; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
 
-    /* ── GRIDS ── */
     .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 13px; margin-bottom: 14px; }
     .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 13px; }
     .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 
-    /* ── PANEL ── */
     .panel {
       background: var(--panel); border: 1px solid var(--border);
       border-radius: 18px; padding: 20px;
@@ -242,7 +232,6 @@
     .panel-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
     .panel-sub { color: var(--muted); font-size: 11.5px; margin-bottom: 13px; }
 
-    /* ── STAT CARDS ── */
     .stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
     .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: .02em; line-height: 1; margin-top: 6px; }
     .stat-value.gold { color: var(--gold); }
@@ -252,7 +241,6 @@
     .stat-delta.up { color: var(--green); }
     .stat-delta.down { color: var(--red); }
 
-    /* ── TABLE ── */
     table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
     th { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; padding: 9px 8px; border-bottom: 1px solid var(--border); font-weight: 600; text-align: left; white-space: nowrap; }
     td { padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,.03); vertical-align: middle; }
@@ -275,7 +263,6 @@
     .sport-tag.baseball { background: rgba(245,197,66,.12); color: var(--gold); border: 1px solid rgba(245,197,66,.2); }
     .sport-tag.softball { background: rgba(74,179,244,.12); color: var(--blue); border: 1px solid rgba(74,179,244,.2); }
 
-    /* ── PLAYER PROFILE ── */
     .profile-hero { display: grid; grid-template-columns: 1fr auto; gap: 13px; margin-bottom: 13px; align-items: stretch; }
     .profile-left { display: flex; align-items: center; gap: 20px; }
     .avatar {
@@ -301,25 +288,20 @@
     .grade-inner span { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); display: block; line-height: 1; }
     .grade-inner small { font-size: 9.5px; color: var(--muted); letter-spacing: .1em; }
 
-    /* ── TREND INDICATORS ── */
     .up { color: var(--green); }
     .down { color: var(--red); }
     .flat { color: var(--blue); }
 
-    /* ── PROGRESS BAR ── */
     .pbar { width: 100%; height: 5px; background: rgba(255,255,255,.07); border-radius: 999px; overflow: hidden; margin-top: 7px; }
     .pfill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 999px; transition: width .6s ease; }
 
-    /* ── NOTES ── */
     .note-card { background: rgba(255,255,255,.035); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; }
     .note-card strong { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: .09em; }
     .note-card p { color: var(--muted); font-size: 12.5px; margin-top: 6px; line-height: 1.6; }
 
-    /* ── FORM ── */
     .form-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 14px; }
     .form-grid input, .form-grid select { font-size: 13px; padding: 10px 12px; }
 
-    /* ── AI INSIGHT PANEL ── */
     .ai-panel {
       background: linear-gradient(135deg, rgba(167,139,250,.06), rgba(74,179,244,.04));
       border: 1px solid rgba(167,139,250,.2);
@@ -331,10 +313,8 @@
     .ai-panel p { color: rgba(238,242,247,.8); font-size: 13px; line-height: 1.7; }
     .ai-panel .ai-loading { color: var(--muted); font-style: italic; font-size: 12.5px; }
 
-    /* ── ADMIN ── */
     .admin-list { color: var(--muted); font-size: 13px; padding-left: 18px; line-height: 2.2; }
 
-    /* ── CONFIG BANNER ── */
     .config-banner {
       background: rgba(245,197,66,.07); border: 1px dashed rgba(245,197,66,.3);
       border-radius: 14px; padding: 16px 20px; margin-bottom: 18px;
@@ -343,7 +323,6 @@
     .config-banner strong { color: var(--gold); }
     .config-banner code { background: rgba(0,0,0,.3); border-radius: 5px; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
 
-    /* ── EMPTY STATE ── */
     .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
     .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
     .empty-state h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
@@ -351,9 +330,7 @@
 
     canvas { max-width: 100%; display: block; }
 
-    /* ═══════════════════════════════
-       MOBILE
-    ═══════════════════════════════ */
+    /* MOBILE */
     @media (max-width: 900px) {
       :root { --sidebar-w: 0px; }
       .app { grid-template-columns: 1fr; }
@@ -389,7 +366,7 @@
       .login-card h1 { font-size: 40px; }
     }
 
-    /* ── LOGIN TABS ── */
+    /* LOGIN TABS */
     .login-tabs {
       display: flex; gap: 6px; margin-bottom: 22px;
       background: rgba(255,255,255,.04); border: 1px solid var(--border);
@@ -421,7 +398,9 @@
 <section id="loginView" class="login-wrap">
   <div class="login-card">
     <div class="brand-lockup">
-      <div class="brand-icon" style="background:transparent;padding:0;overflow:hidden"><img src="data:image/jpeg;base64,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" style="width:48px;height:48px;object-fit:contain;border-radius:14px" /></div>
+      <div class="brand-icon" style="background:transparent;padding:0;overflow:hidden">
+        <img src="https://i.imgur.com/placeholder.png" style="width:48px;height:48px;object-fit:contain;border-radius:14px" onerror="this.parentNode.style.background='var(--gold)';this.style.display='none';this.parentNode.innerHTML='ACA'" />
+      </div>
       <div class="brand-text">
         <strong>ASA PLAYER360</strong>
         <span>Baseball &amp; Softball Development Hub</span>
@@ -490,7 +469,7 @@
 <div id="appView" class="app hidden">
   <aside>
     <div class="side-brand">
-      <div class="side-logo" style="background:transparent;padding:0;overflow:hidden"><img src="data:image/jpeg;base64,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" style="width:40px;height:40px;object-fit:contain;border-radius:11px" /></div>
+      <div class="side-logo" style="background:var(--gold);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:#0d1117">ACA</div>
       <div class="side-brand-text">
         <h3>Player360</h3>
         <small id="roleLbl">Parent View</small>
@@ -556,7 +535,7 @@
     <!-- OVERVIEW -->
     <section id="overview" class="section active">
       <div id="configBanner" class="config-banner hidden">
-        ⚠️ <strong>Connect Your Google Sheet:</strong> Open this file and set <code>SHEETS_URL</code> to your Apps Script web app URL. See <code>Code.gs</code> for setup instructions. Showing demo data for now.
+        ⚠️ <strong>Google Sheet not responding:</strong> Showing demo data. Check that your Apps Script is deployed as a web app with "Anyone" access.
       </div>
       <div class="g4" id="statCards">
         <div class="panel"><div class="stat-label">Total Players</div><div class="stat-value gold" id="sTot">—</div><div class="stat-accent"></div></div>
@@ -679,7 +658,7 @@
     <section id="eval" class="section">
       <div class="panel">
         <div class="panel-title">Add / Update Evaluation</div>
-        <div class="panel-sub" id="evalStatus">Updates save to Google Sheets when SHEETS_URL is configured.</div>
+        <div class="panel-sub" id="evalStatus">Updates save to Google Sheets when connected.</div>
         <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div>
             <label class="fl">Select Player</label>
@@ -762,10 +741,10 @@
 
     <!-- ADMIN -->
     <section id="admin" class="section">
-      <div class="g3">
+      <div class="g3" style="margin-bottom:13px">
         <div class="panel" style="grid-column:span 2">
           <div class="panel-title">Access Code Management</div>
-          <div class="panel-sub">All role-based login codes — update the <code style="background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">ADMIN_CODE</code> and <code style="background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">COACH_CODES</code> in the script to change them.</div>
+          <div class="panel-sub">All role-based login codes</div>
           <div class="g2" style="gap:13px;margin-top:4px">
             <div>
               <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px">Admin Code</div>
@@ -786,32 +765,20 @@
                 <tr><td>14U Gold</td><td class="num" style="color:var(--blue)">ACA-14U-GOLD</td></tr>
                 <tr><td>HS Prospects</td><td class="num" style="color:var(--blue)">ACA-HS-PROSPECT</td></tr>
               </table>
-              <div style="margin-top:12px;padding:10px 14px;background:rgba(245,197,66,.06);border:1px solid rgba(245,197,66,.15);border-radius:10px;font-size:12px;color:rgba(245,197,66,.8);line-height:1.6">
-                💡 <strong>To add a team code:</strong> add a new team to your Google Sheet and share the team name as the code (e.g. <span style="font-family:'JetBrains Mono',monospace;font-size:11px">ACA-16U-NAVY</span>). Parents enter it exactly as typed.
-              </div>
             </div>
           </div>
         </div>
         <div class="panel">
           <div class="panel-title">Connection Status</div>
-          <div class="panel-sub">Google Sheets integration</div>
-          <div id="connStatus">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-              <div id="connDot" style="width:8px;height:8px;border-radius:50%;background:var(--red)"></div>
-              <span id="connText" style="font-size:13px">Not connected</span>
-            </div>
-            <div style="color:var(--muted);font-size:12px;line-height:1.7">
-              Set <code style="background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">SHEETS_URL</code> in the script to connect.
-            </div>
+          <div class="panel-sub">Google Sheets live data</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 0">
+            <div id="connDot" style="width:10px;height:10px;border-radius:50%;background:var(--red);flex-shrink:0"></div>
+            <span id="connText" style="font-size:13px;font-weight:600">Connecting…</span>
           </div>
-          <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="loadFromSheets()">Test Connection</button>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Eval Completion</div>
-          <div class="panel-sub">Current testing cycle</div>
-          <div class="pbar" style="height:10px;margin-top:16px"><div class="pfill" id="evalPct" style="width:0%"></div></div>
-          <div class="stat-value gold" style="margin-top:12px" id="evalPctNum">—</div>
-          <div style="color:var(--muted);font-size:12px;margin-top:4px">of roster evaluated this cycle</div>
+          <div class="pbar" style="height:6px;margin-bottom:14px"><div class="pfill" id="evalPct" style="width:0%"></div></div>
+          <div class="stat-value gold" style="font-size:32px" id="evalPctNum">—</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:4px;margin-bottom:14px">of roster evaluated</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadFromSheets()" style="width:100%">↺ Refresh Data</button>
         </div>
       </div>
     </section>
@@ -820,13 +787,13 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  ★  CONFIGURATION — update these two lines  ★
+//  CONFIGURATION
 // ══════════════════════════════════════════════════════════════
-const SHEETS_URL   = "https://script.google.com/macros/s/AKfycbxJE6xPzknOVzbXm2sM78v8C0L4SmqBx7onAk62mVcEKbFFL-N0RNOcfEkhrUvEDXR6yg/exec";
-const COACH_TOKEN  = "ACA_SECRET_2024"; // Must match SECRET_TOKEN in Code.gs
+const SHEETS_URL  = "https://script.google.com/macros/s/AKfycbyg6FbtLBHied6n9L5H3WISlBYTlw_9V_lCK_rPIm7mgcKh69EpXFKkiETTgScN7w69/exec";
+const COACH_TOKEN = "ACA_SECRET_2024"; // Must match SECRET_TOKEN in Code.gs
 // ══════════════════════════════════════════════════════════════
 
-// ── Demo data (fallback when SHEETS_URL is not set) ──────────
+// ── Demo data (fallback when Sheets unavailable) ─────────────
 const DEMO_PLAYERS = [
   {id:1,name:"Jaxon Smith",sport:"Baseball",team:"12U Black",code:"ACA-12U-BLACK",age:12,primary:"C",secondary:"P / 3B",bats:"R",throws:"R",pop:2.18,exchange:.68,arm:67,hand:22,exit:73,sixty:7.62,fb:66,change:58,curve:55,strike:64,command:58,hitting:84,defense:88,pitching:81,catching:91,athletic:80,note:"Strong receiving foundation. Needs faster foot replacement on throws.",goals:"Get exchange time below 0.65 and improve throwing accuracy to second base."},
   {id:2,name:"Mason Torres",sport:"Baseball",team:"12U Black",code:"ACA-12U-BLACK",age:12,primary:"P",secondary:"1B / OF",bats:"L",throws:"L",pop:2.45,exchange:.76,arm:63,hand:21,exit:76,sixty:7.88,fb:68,change:59,curve:56,strike:71,command:63,hitting:86,defense:77,pitching:89,catching:65,athletic:75,note:"Strike thrower. Needs better changeup separation.",goals:"Increase command percentage above 68%."},
@@ -843,7 +810,7 @@ let teamCode = "";
 let charts = {};
 let sheetsConnected = false;
 
-// ── Helpers ─────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────
 const ini = n => n.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase();
 const ovr = p => Math.round(p.hitting*.25 + p.defense*.22 + p.athletic*.18 + Math.max(p.pitching||0, p.catching||0)*.25 + 8);
 const isSoftball = p => (p.sport||"").toLowerCase() === "softball";
@@ -854,7 +821,6 @@ function visible() {
   if (sf !== "All") list = list.filter(p => p.sport === sf);
 
   if (role === "parent") {
-    // match by code field OR derive team from code slug
     list = list.filter(p =>
       (p.code||"").toUpperCase() === teamCode ||
       (p.team||"").toLowerCase().replace(/\s+/g,"-") === teamCode.toLowerCase().replace(/^aca-/,"").replace(/\s+/g,"-")
@@ -862,21 +828,19 @@ function visible() {
   } else if (role === "coach") {
     const assignedTeam = window._coachTeam || "ALL";
     if (assignedTeam !== "ALL") {
-      // hard-lock coach to their assigned team regardless of dropdown
       list = list.filter(p => p.team === assignedTeam);
     } else {
       const t = document.getElementById("teamFilter")?.value || "All Teams";
       if (t !== "All Teams") list = list.filter(p => p.team === t);
     }
   } else {
-    // admin: respect dropdown
     const t = document.getElementById("teamFilter")?.value || "All Teams";
     if (t !== "All Teams") list = list.filter(p => p.team === t);
   }
   return list;
 }
 
-// ── Toast notifications ──────────────────────────────────────
+// ── Toast ────────────────────────────────────────────────────
 function toast(msg, type = "info", dur = 3200) {
   const el = document.createElement("div");
   el.className = `toast ${type}`;
@@ -886,7 +850,7 @@ function toast(msg, type = "info", dur = 3200) {
   setTimeout(() => el.remove(), dur);
 }
 
-// ── Loading bar ──────────────────────────────────────────────
+// ── Loading bar ───────────────────────────────────────────────
 function setLoad(pct) {
   const bar = document.getElementById("loadBar");
   bar.classList.remove("hidden");
@@ -896,48 +860,50 @@ function setLoad(pct) {
 
 // ── Google Sheets fetch ──────────────────────────────────────
 async function loadFromSheets() {
-  if (!SHEETS_URL) {
-    allPlayers = DEMO_PLAYERS;
-    document.getElementById("configBanner")?.classList.remove("hidden");
-    setConnStatus(false);
-    renderAll();
-    return;
-  }
   setLoad(20);
   try {
-    const res = await fetch(`${SHEETS_URL}?action=getPlayers`, { cache:"no-store" });
-    const data = await res.json();
+    const url = `${SHEETS_URL}?action=getPlayers&t=${Date.now()}`;
+    const res = await fetch(url, { method:"GET", redirect:"follow", cache:"no-store" });
+    const raw = await res.text();
+
+    if (raw.trim().startsWith("<")) {
+      throw new Error("Script returned HTML — check deployment settings (Who has access: Anyone)");
+    }
+
+    const data = JSON.parse(raw);
     setLoad(80);
+
     if (data.success && data.players?.length) {
       allPlayers = data.players;
       sheetsConnected = true;
       setConnStatus(true);
-      toast("Data loaded from Google Sheets ✓", "success");
+      toast(`✓ Loaded ${data.players.length} players from Google Sheets`, "success");
       document.getElementById("configBanner")?.classList.add("hidden");
+    } else if (data.players && data.players.length === 0) {
+      throw new Error("Sheet connected but 0 players returned — check your sheet has data rows");
     } else {
-      throw new Error(data.error || "No players returned");
+      throw new Error(data.error || "Unexpected response from script");
     }
   } catch(err) {
-    console.warn("Sheets error:", err.message, "— using demo data");
+    console.warn("Sheets error:", err.message);
     allPlayers = DEMO_PLAYERS;
-    toast("Using demo data. Check SHEETS_URL.", "error");
+    toast("Using demo data — " + err.message.slice(0,60), "error", 5000);
     setConnStatus(false);
+    document.getElementById("configBanner")?.classList.remove("hidden");
   }
   setLoad(100);
   renderAll();
 }
-
 function setConnStatus(ok) {
   const dot = document.getElementById("connDot");
   const txt = document.getElementById("connText");
   if (!dot) return;
   dot.style.background = ok ? "var(--green)" : "var(--red)";
-  txt.textContent = ok ? "Connected to Google Sheets" : "Not connected (demo mode)";
+  txt.textContent = ok ? "Connected to Google Sheets ✓" : "Not connected (demo mode)";
 }
 
-// ── POST to Sheets ───────────────────────────────────────────
+// ── POST to Sheets ────────────────────────────────────────────
 async function postToSheets(action, data) {
-  if (!SHEETS_URL) return { demo: true };
   const res = await fetch(SHEETS_URL, {
     method: "POST",
     body: JSON.stringify({ action, token: COACH_TOKEN, data }),
@@ -946,20 +912,16 @@ async function postToSheets(action, data) {
   return res.json();
 }
 
-// ── LOGIN CODES (change these to your own!) ─────────────────
-// Admin code: full access to everything
+// ── LOGIN CODES ──────────────────────────────────────────────
 const ADMIN_CODE = "ADMIN-ACA";
-// Coach codes: map code → which team(s) they can see
-// "ALL" means they see every team, otherwise list exact team names
 const COACH_CODES = {
-  "COACH-ACA":   "ALL",           // head coach — sees all teams
-  "COACH-12U":   "12U Black",     // assistant coach — 12U only
-  "COACH-14U":   "14U Gold",      // assistant coach — 14U only
-  "COACH-HS":    "HS Prospects"   // assistant coach — HS only
+  "COACH-ACA":  "ALL",
+  "COACH-12U":  "12U Black",
+  "COACH-14U":  "14U Gold",
+  "COACH-HS":   "HS Prospects"
 };
-// Parent codes: any code not matching admin/coach is treated as a team code
 
-// ── Tab switching ────────────────────────────────────────────
+// ── Tab switching ─────────────────────────────────────────────
 function switchTab(tab, btn) {
   document.querySelectorAll(".ltab").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".ltab-panel").forEach(p => p.classList.remove("active"));
@@ -968,11 +930,10 @@ function switchTab(tab, btn) {
   document.getElementById("loginError").innerText = "";
 }
 
-// ── Tab-aware login ──────────────────────────────────────────
+// ── Login ────────────────────────────────────────────────────
 async function doLoginTab(tabRole) {
   const errEl = document.getElementById("loginError");
   errEl.innerText = "";
-
   let c = "";
   let assignedTeam = null;
 
@@ -980,25 +941,19 @@ async function doLoginTab(tabRole) {
     c = document.getElementById("adminCode").value.trim().toUpperCase();
     if (!c) { errEl.innerText = "Enter your admin code."; return; }
     if (c !== ADMIN_CODE) { errEl.innerText = "Invalid admin code. Try again."; return; }
-    role = "admin";
-    teamCode = c;
-
+    role = "admin"; teamCode = c;
   } else if (tabRole === "coach") {
     c = document.getElementById("coachCode").value.trim().toUpperCase();
     if (!c) { errEl.innerText = "Enter your coach code."; return; }
     if (!COACH_CODES[c]) { errEl.innerText = "Invalid coach code. Contact your admin."; return; }
-    role = "coach";
-    teamCode = c;
-    assignedTeam = COACH_CODES[c]; // "ALL" or specific team name
-
+    role = "coach"; teamCode = c;
+    assignedTeam = COACH_CODES[c];
   } else {
     c = document.getElementById("parentCode").value.trim().toUpperCase();
     if (!c) { errEl.innerText = "Enter your team access code."; return; }
-    role = "parent";
-    teamCode = c;
+    role = "parent"; teamCode = c;
   }
 
-  // Store assigned team for coach filtering
   window._coachTeam = assignedTeam;
 
   document.getElementById("loginView").classList.add("hidden");
@@ -1012,31 +967,21 @@ async function doLoginTab(tabRole) {
   await loadFromSheets();
 }
 
-// keep quickLogin for any internal use
-function quickLogin(code) { document.getElementById("parentCode").value = code; doLoginTab("parent"); }
-function doLogin() { doLoginTab("parent"); }
-
 function setupFilters() {
   const tf = document.getElementById("teamFilter");
   const assignedTeam = window._coachTeam || null;
 
   if (role === "parent") {
-    // parent sees only their team
-    const team = allPlayers.find(p => (p.code||"").toUpperCase() === teamCode)?.team
-                 || DEMO_PLAYERS.find(p => p.code === teamCode)?.team
-                 || teamCode;
+    const team = DEMO_PLAYERS.find(p => p.code === teamCode)?.team || teamCode;
     tf.innerHTML = `<option>${team}</option>`;
     tf.disabled = true;
   } else if (role === "coach" && assignedTeam && assignedTeam !== "ALL") {
-    // coach locked to their team only
     tf.innerHTML = `<option>${assignedTeam}</option>`;
     tf.disabled = true;
   } else {
-    // admin or all-access coach: full team list
     tf.disabled = false;
-    const allTeams = [...new Set([...DEMO_PLAYERS, ...allPlayers].map(p=>p.team).filter(Boolean))];
-    const teams = ["All Teams", ...allTeams];
-    tf.innerHTML = teams.map(t => `<option>${t}</option>`).join("");
+    const allTeams = [...new Set([...DEMO_PLAYERS].map(p=>p.team).filter(Boolean))];
+    tf.innerHTML = ["All Teams", ...allTeams].map(t => `<option>${t}</option>`).join("");
   }
 }
 
@@ -1047,6 +992,13 @@ function refreshDropdowns() {
     const el = document.getElementById(id);
     if (el) el.innerHTML = opts || '<option>No players</option>';
   });
+  // After data loads, update team filter with real teams
+  if (sheetsConnected && role === "admin") {
+    const tf = document.getElementById("teamFilter");
+    const allTeams = [...new Set(allPlayers.map(p=>p.team).filter(Boolean))];
+    const current = tf.value;
+    tf.innerHTML = ["All Teams", ...allTeams].map(t => `<option${t===current?' selected':''}>${t}</option>`).join("");
+  }
 }
 
 function show(id, btn) {
@@ -1105,9 +1057,8 @@ function renderOverview() {
   const best60 = Math.min(...list.map(p=>p.sixty||99));
   document.getElementById("s60").innerText = best60 < 99 ? best60.toFixed(2) : "—";
 
-  // Eval completion
   const withExit = list.filter(p => p.exit > 0);
-  const pct = Math.round(withExit.length / list.length * 100);
+  const pct = list.length ? Math.round(withExit.length / list.length * 100) : 0;
   const pctEl = document.getElementById("evalPct");
   const pctNum = document.getElementById("evalPctNum");
   if (pctEl) pctEl.style.width = pct + "%";
@@ -1115,7 +1066,6 @@ function renderOverview() {
 
   const avg = k => Math.round(list.reduce((s,p)=>s+(parseFloat(p[k])||0),0)/list.length);
 
-  // Radar
   if (charts.radar) charts.radar.destroy();
   charts.radar = new Chart(document.getElementById("radarC"), {
     type:"radar",
@@ -1134,7 +1084,6 @@ function renderOverview() {
     }
   });
 
-  // Distribution bar
   const bins = [50,60,70,80,90,100];
   const binLabels = ["50-59","60-69","70-79","80-89","90-99","100"];
   const counts = bins.map((lo,i) => list.filter(p=>{ const g=ovr(p); return g>=lo&&g<(bins[i+1]||101); }).length);
@@ -1148,7 +1097,6 @@ function renderOverview() {
     options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#7a8fa6",font:{size:11}},grid:{display:false}},y:{ticks:{color:"#7a8fa6",font:{size:11},stepSize:1},grid:{color:"rgba(255,255,255,.05)"}}}}
   });
 
-  // Donut
   const bb = list.filter(p=>p.sport==="Baseball").length;
   const sb = list.filter(p=>p.sport==="Softball").length;
   if (charts.donut) charts.donut.destroy();
@@ -1161,18 +1109,26 @@ function renderOverview() {
     options:{cutout:"65%",plugins:{legend:{labels:{color:"#7a8fa6",font:{size:12}}}}}
   });
 
-  // Top metrics
-  const best=(k,lo,sfx)=>{const s=[...list].sort((a,b)=>lo?a[k]-b[k]:b[k]-a[k]);return{n:s[0].name,v:s[0][k]+sfx};};
-  const rows=[["🎯 Best Pop Time",best("pop",true," s")],["💪 Top Arm Velo",best("arm",false," MPH")],["🔥 Top Exit Velo",best("exit",false," MPH")],["⚡ Best 60 Time",best("sixty",true," s")]];
-  document.getElementById("topMet").innerHTML=`<tr><th>Metric</th><th>Player</th><th>Value</th></tr>`+
-    rows.map(r=>`<tr><td style="color:var(--muted)">${r[0]}</td><td><strong>${r[1].n}</strong></td><td><span class="num" style="color:var(--gold);font-weight:700">${r[1].v}</span></td></tr>`).join("");
+  const safeBest = (k, lo) => {
+    const s = [...list].filter(p => p[k] > 0).sort((a,b) => lo ? a[k]-b[k] : b[k]-a[k]);
+    return s.length ? { n: s[0].name, v: s[0][k] } : { n: "—", v: "—" };
+  };
+  const rows = [
+    ["🎯 Best Pop Time", safeBest("pop",true), "s"],
+    ["💪 Top Arm Velo",  safeBest("arm",false), " MPH"],
+    ["🔥 Top Exit Velo", safeBest("exit",false), " MPH"],
+    ["⚡ Best 60 Time",  safeBest("sixty",true), "s"]
+  ];
+  document.getElementById("topMet").innerHTML =
+    `<tr><th>Metric</th><th>Player</th><th>Value</th></tr>` +
+    rows.map(r => `<tr><td style="color:var(--muted)">${r[0]}</td><td><strong>${r[1].n}</strong></td><td><span class="num" style="color:var(--gold);font-weight:700">${r[1].v !== "—" ? r[1].v + r[2] : "—"}</span></td></tr>`).join("");
 }
 
 // ── ROSTER ───────────────────────────────────────────────────
 function renderRoster() {
   const q = (document.getElementById("searchInput")?.value||"").toLowerCase();
   let list = [...visible()].sort((a,b)=>ovr(b)-ovr(a));
-  if (q) list = list.filter(p=>p.name.toLowerCase().includes(q)||p.team.toLowerCase().includes(q)||p.primary.toLowerCase().includes(q));
+  if (q) list = list.filter(p=>p.name.toLowerCase().includes(q)||(p.team||"").toLowerCase().includes(q)||(p.primary||"").toLowerCase().includes(q));
   document.getElementById("rosterTbl").innerHTML =
     `<tr><th>Player</th><th>Sport</th><th>Team</th><th>Pos</th><th>OVR</th><th>Exit</th><th>Arm</th><th>60 Time</th></tr>`+
     (list.length ? list.map(p=>`<tr>
@@ -1181,8 +1137,8 @@ function renderRoster() {
         <strong style="cursor:pointer" onclick="jumpToProfile(${p.id})">${p.name}</strong>
       </div></td>
       <td><span class="sport-tag ${isSoftball(p)?'softball':'baseball'}">${p.sport||'BB'}</span></td>
-      <td style="color:var(--muted);font-size:12px">${p.team}</td>
-      <td>${p.primary}</td>
+      <td style="color:var(--muted);font-size:12px">${p.team||'—'}</td>
+      <td>${p.primary||'—'}</td>
       <td><strong class="ovr">${ovr(p)}</strong></td>
       <td class="num">${p.exit||'—'} MPH</td>
       <td class="num">${p.arm||'—'} MPH</td>
@@ -1211,7 +1167,7 @@ function renderLeaderboards() {
     [...list].filter(p=>p.pop>0).sort((a,b)=>(a.pop||99)-(b.pop||99)).map(p=>mkRow(p)+`<td class="num" style="color:var(--gold)">${p.pop}s</td><td class="num">${p.exchange}s</td><td class="num">${p.arm||'—'} MPH</td></tr>`).join("");
 }
 
-// ── PLAYER PROFILE ───────────────────────────────────────────
+// ── PLAYER PROFILE ────────────────────────────────────────────
 function renderProfile() {
   const list = visible();
   if (!list.length) return;
@@ -1222,18 +1178,16 @@ function renderProfile() {
   document.getElementById("pAvatar").innerText = ini(p.name);
   document.getElementById("pAvatar").className = `avatar${soft?" softball-av":""}`;
   document.getElementById("pName").innerText = p.name;
-  document.getElementById("pMeta").innerText = `${p.sport||"Baseball"} • ${p.team} • Age ${p.age} • ${p.primary}/${p.secondary} • B/T: ${p.bats}/${p.throws}`;
+  document.getElementById("pMeta").innerText = `${p.sport||"Baseball"} • ${p.team||""} • Age ${p.age||"?"} • ${p.primary||"?"}/${p.secondary||"?"} • B/T: ${p.bats||"?"}/${p.throws||"?"}`;
 
   const g = ovr(p);
   document.getElementById("pGrade").innerText = g;
   document.getElementById("gRing").style.background = `conic-gradient(#f5c542 0 ${g}%, rgba(255,255,255,.08) ${g}% 100%)`;
 
-  // Rank
   const ranked = [...list].sort((a,b)=>ovr(b)-ovr(a));
   const rank = ranked.findIndex(x=>x.id===p.id)+1;
   document.getElementById("pRank").innerText = `#${rank} of ${list.length} on roster`;
 
-  // Badges
   const badges = [];
   if (p.exit>=85) badges.push(["Power Bat 🔥","badge-gold"]);
   else if (p.exit>=75) badges.push(["Solid Contact","badge-gold"]);
@@ -1247,19 +1201,16 @@ function renderProfile() {
   if (!badges.length) badges.push(["Development Prospect","badge-blue"]);
   document.getElementById("pBadges").innerHTML = badges.map(b=>`<span class="badge ${b[1]}">${b[0]}</span>`).join("");
 
-  // Metrics table with trend icons
-  const T = (v,lo) => `<span class="${lo?'up':'up'}">↑</span>`;
   document.getElementById("pMets").innerHTML =
     `<tr><th>Metric</th><th>Value</th></tr>`+
-    [[p.pop>0,`Pop Time`,`${p.pop}s`],[p.exchange>0,`Exchange`,`${p.exchange}s`],[p.arm>0,`Arm Velo`,`${p.arm} MPH`],
-     [p.exit>0,`Exit Velo`,`${p.exit} MPH`],[p.sixty>0,`60 Time`,`${p.sixty}s`],
-     [p.fb>0,`FB Velo`,`${p.fb} MPH`],[p.strike>0,`Strike %`,`${p.strike}%`],[p.command>0,`Command %`,`${p.command}%`]]
+    [[p.pop>0,"Pop Time",`${p.pop}s`],[p.exchange>0,"Exchange",`${p.exchange}s`],[p.arm>0,"Arm Velo",`${p.arm} MPH`],
+     [p.exit>0,"Exit Velo",`${p.exit} MPH`],[p.sixty>0,"60 Time",`${p.sixty}s`],
+     [p.fb>0,"FB Velo",`${p.fb} MPH`],[p.strike>0,"Strike %",`${p.strike}%`],[p.command>0,"Command %",`${p.command}%`]]
     .filter(r=>r[0]).map(r=>`<tr><td style="color:var(--muted)">${r[1]}</td><td class="num" style="color:var(--text)">${r[2]}</td></tr>`).join("");
 
   document.getElementById("pGoal").innerText = p.goals||p.goal||"No goal set.";
   document.getElementById("pNote").innerText = p.note||"No coach note yet.";
 
-  // Trend chart
   if (charts.trend) charts.trend.destroy();
   charts.trend = new Chart(document.getElementById("trendC"), {
     type:"line",
@@ -1279,12 +1230,11 @@ function renderProfile() {
     }
   });
 
-  // Reset AI text on player change
   document.getElementById("aiText").className = "ai-loading";
   document.getElementById("aiText").innerText = 'Click "Generate Analysis" to get an AI-powered development report for this player.';
 }
 
-// ── AI INSIGHT ───────────────────────────────────────────────
+// ── AI INSIGHT ────────────────────────────────────────────────
 async function getAIInsight() {
   const list = visible();
   if (!list.length) return;
@@ -1344,7 +1294,7 @@ Write a development report covering: (1) top strength to leverage, (2) primary d
   document.getElementById("aiBtn").innerText = "Regenerate";
 }
 
-// ── DEV LIST ─────────────────────────────────────────────────
+// ── DEV LIST ──────────────────────────────────────────────────
 function renderDev() {
   const list = visible();
   const el = document.getElementById("devList");
@@ -1360,7 +1310,7 @@ function renderDev() {
     </div>`).join("");
 }
 
-// ── SAVE EVALUATION ──────────────────────────────────────────
+// ── SAVE EVALUATION ───────────────────────────────────────────
 async function saveEval() {
   const id = Number(document.getElementById("evalPl").value);
   const sport = document.getElementById("evalSport").value;
@@ -1374,19 +1324,17 @@ async function saveEval() {
     hand:getNum("eHand"), hitting:getNum("eHit"), defense:getNum("eDef"), athletic:getNum("eAth")
   };
 
-  // Update local state immediately
   Object.entries(data).forEach(([k,v]) => { if(v!=="") p[k] = v; });
 
-  if (SHEETS_URL) {
-    try {
-      setLoad(30);
-      const result = await postToSheets("saveEval", data);
-      setLoad(100);
-      if (result.success) toast("Saved to Google Sheets ✓","success");
-      else toast(result.error||"Save failed","error");
-    } catch(e) { toast("Network error saving to Sheets","error"); setLoad(100); }
-  } else {
-    toast("Saved locally (demo mode — set SHEETS_URL to persist)","info");
+  try {
+    setLoad(30);
+    const result = await postToSheets("saveEval", data);
+    setLoad(100);
+    if (result.success) toast("Saved to Google Sheets ✓","success");
+    else toast(result.error||"Save failed","error");
+  } catch(e) {
+    toast("Saved locally — network error writing to Sheets","info");
+    setLoad(100);
   }
   renderAll();
 }
@@ -1397,7 +1345,7 @@ function clearEvalForm() {
   });
 }
 
-// ── SAVE NOTE ────────────────────────────────────────────────
+// ── SAVE NOTE ─────────────────────────────────────────────────
 async function saveNote() {
   const id = Number(document.getElementById("notePl").value);
   const p = allPlayers.find(x=>x.id===id);
@@ -1405,20 +1353,16 @@ async function saveNote() {
   if (!p||!note) { toast("Select a player and enter a note","error"); return; }
 
   p.note = note;
-  if (SHEETS_URL) {
-    try {
-      const result = await postToSheets("saveNote",{id,name:p.name,sport:p.sport,note});
-      if (result.success) toast("Note saved to Sheets ✓","success");
-      else toast(result.error||"Save failed","error");
-    } catch(e) { toast("Network error","error"); }
-  } else {
-    toast("Note saved locally (demo mode)","info");
-  }
+  try {
+    const result = await postToSheets("saveNote",{id,name:p.name,sport:p.sport,note});
+    if (result.success) toast("Note saved to Sheets ✓","success");
+    else toast(result.error||"Save failed","error");
+  } catch(e) { toast("Network error","error"); }
   document.getElementById("noteText").value = "";
   renderAll();
 }
 
-// ── ADD PLAYER ───────────────────────────────────────────────
+// ── ADD PLAYER ────────────────────────────────────────────────
 async function addNewPlayer() {
   const name = document.getElementById("npName").value.trim();
   if (!name) { toast("Enter player name","error"); return; }
@@ -1436,28 +1380,27 @@ async function addNewPlayer() {
     exit:0,arm:0,pop:0,exchange:0,sixty:0,fb:0,strike:0,command:0,active:"TRUE"
   };
 
-  if (SHEETS_URL) {
-    try {
-      setLoad(30);
-      const result = await postToSheets("addPlayer",data);
-      setLoad(100);
-      if (result.success) {
-        data.id = result.id;
-        allPlayers.push(data);
-        toast(`${name} added to Sheets ✓`,"success");
-        setupFilters();
-        renderAll();
-      } else toast(result.error||"Add failed","error");
-    } catch(e) { toast("Network error","error"); setLoad(100); }
-  } else {
+  try {
+    setLoad(30);
+    const result = await postToSheets("addPlayer",data);
+    setLoad(100);
+    if (result.success) {
+      data.id = result.id;
+      allPlayers.push(data);
+      toast(`${name} added to Sheets ✓`,"success");
+      setupFilters();
+      renderAll();
+    } else toast(result.error||"Add failed","error");
+  } catch(e) {
     data.id = Math.max(...allPlayers.map(p=>p.id||0),0)+1;
     data.code = teamCode;
     allPlayers.push(data);
-    toast(`${name} added (demo mode)`,"info");
+    toast(`${name} added locally (network error)`, "info");
+    setLoad(100);
     setupFilters();
     renderAll();
   }
 }
 </script>
 </body>
-</html>
+</html
